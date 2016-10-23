@@ -44,6 +44,19 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: Accept-Language
+          in: header
+          description: The language code requested in the response. If a suitable match to the requested language is not available, en-US or the appliance locale is used.
+          required: false
+          type: string
+        - name: X-Api-Version
+          in: header
+          description: Specifies the version of the API to invoke. The behavior of a given API version remains the same. It is upward compatible from release to release. New versions of an API are created when new features or changes are introduced. To ensure expected behavior, always provide the X-Api-Version value.
+        - name: Auth
+          in: header
+          description: Session authorization token obtained from logging in. If this header is not included or if the session-token is invalid, the response code will be 401 Unauthorized.
+          required: true
+          type: string
         - name: count
           in: query
           description: The number of resources to return. A count of -1 requests all the items. The actual number of items in the response can differ from the requested count if the sum of start and count exceed the total number of items, or if returning the requested number of items would take too long.
