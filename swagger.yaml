@@ -1,0 +1,84 @@
+swagger: '2.0'
+info:
+  description: 
+    "About the HPE OneView API Reference
+The API reference material is used in tandem with the HPE OneView API scripting documentation.
+
+How to use this reference
+The table of contents links to the REST API specification for each resource type in the HPE OneView resource model. Each REST API specification defines the REST APIs provided by that resource, including the URI, method, parameters, request body, and response body. In many cases, these components are displayed as links.
+
+These API specifications are intended to provide all the details needed to call the HPE OneView REST APIs and to build scripts around these calls.
+
+Supported REST API versions
+This release of HPE OneView supports the REST API version(s) listed in the table below.
+
+A copy of the API Reference is available online at www.hpe.com/info/oneview/docs. See also the REST API Scripting Help for the current version that is included with the online help for this release."
+  version: "300"
+  title: HPE OneView REST API
+  contact:
+    name: http://h22168.www2.hpe.com/composable_infra/partner_program/us/en/index.html
+schemes:
+  - https
+basePath: /rest/
+x-origin:
+    format: swagger
+tags: 
+  - name: User
+    description: "The users resource provides REST APIs to configure user settings in the appliance. Supports the following operations: 1) User with administrative privileges modifying password and contact information of another existing user 2) User performing self edit and modifying password or contact information 3) Add roles and bulk replace of roles 4) Assigning and un-assign (deleting) roles to users 5) Removing local user(s) from appliance 6) Changing administrator password during first time setup of appliance 7) Resetting administrator password 8) Retrieve role information of users. X-Api-Version in the HTTP header should be at least 100."
+securityDefinitions:
+  Session ID Authorization header:
+    in: header
+    name: Auth
+    type: apiKey
+    description:  Session authorization token obtained from logging.  If this header is not included or if the session-token is invalid, the response code will be 401 Unauthorized.
+security:
+  - Session ID Authorization header: []
+paths:
+  /users:
+    get:
+      tags: 
+        - User
+      description: Lists details of all local user accounts present in the appliance.
+      operationId: getUser
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: count
+          in: query
+          description: The number of resources to return. A count of -1 requests all the items. The actual number of items in the response can differ from the requested count if the sum of start and count exceed the total number of items, or if returning the requested number of items would take too long.
+          required: true
+          type: integer
+        - name: filter
+          in: query
+          description: A general filter/query string to narrow the list of items returned. The default is no filter - all resources are returned. See the Common Parameters page for more information on the usage of filter
+          required: false
+          type: string
+        - name: query
+          in: query
+          description: A general query string to narrow the list of resources returned. The default is no query - all resources are returned. See the Common Parameters page for more information on the usage of query.
+          required: false
+          type: string
+        - name: sort
+          in: query
+          description: The sort order of the returned data set. By default, the sort order is based on create time, with the oldest entry first. See the Common Parameters page for more information on the usage of sort.
+          required: false
+          type: string
+        - name: start
+          in: query
+          description: The first item to return, using 0-based indexing. If not specified, the default is 0 - start with the first available item.
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid parameter
+        '401':
+          description: Authentication failed
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
